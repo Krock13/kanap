@@ -1,13 +1,13 @@
 // Récupération de la liste des produits
- fetch(`http://localhost:3000/api/products`)
+ fetch("http://localhost:3000/api/products")
     .then(res => res.json())
     .then(productList => {
-        genProductCard(productList);
+        generateProductsCard(productList);
     })
     .catch(err => console.log("error", err));
 
 // Fonction pour la création des fiches produits
-function genProductCard(productList) {
+function generateProductsCard(productList) {
     for (let i = 0; i < productList.length; i++) {
         // Récupération de l'élément du DOM qui accueillera les fiches
         const sectionFiches = document.querySelector(".items");
@@ -25,7 +25,7 @@ function genProductCard(productList) {
 
         // Création de l’élément img.
         const imageElement = document.createElement("img");
-        // Accé à l’indice i de la liste produit pour configurer la source de l’image.
+        // Accès à l’indice i de la liste produit pour configurer la source de l’image
         imageElement.src = productList[i].imageUrl;
         imageElement.setAttribute("alt", productList[i].altTxt);
         // Rattachement de l’image à productElement (la balise article)
@@ -43,4 +43,4 @@ function genProductCard(productList) {
         // Rattachement de la balise article à la section fiches
         linkElement.appendChild(productElement);
     }
-}
+};
