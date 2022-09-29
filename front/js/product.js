@@ -45,7 +45,7 @@ function productDetails(productId) {
     const colorsElement = productId.colors;
 
     // Boucle pour inserer chaque couleur dans une option
-    for (let i = 0; i < colorsElement.length; i++) {
+    for (let i in colorsElement) {
         const color = document.createElement("option");
         color.setAttribute("value", colorsElement[i]);
         color.innerText =  colorsElement[i];

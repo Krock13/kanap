@@ -8,7 +8,7 @@
 
 // Fonction pour la création des fiches produits
 function generateProductsCard(productList) {
-    for (let i = 0; i < productList.length; i++) {
+    for (let i in productList) {
         // Récupération de l'élément du DOM qui accueillera les fiches
         const sectionFiches = document.querySelector(".items");
 
