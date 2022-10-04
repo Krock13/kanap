@@ -62,11 +62,13 @@ function stringifyLocalStorage(e) {
     localStorage.setItem("cartStorage", cartRec);
 }
 
+/*
 // Lit le panier enregistré dans le localStorage
 function parseLocalStorage() {
     let list = localStorage.getItem("cartStorage");
     let listJson = JSON.parse(list);
 }
+*/
 
 // S'active lorsque l'utilisateur clique sur "ajouter au panier"
 elt.addEventListener("click", function() {
