@@ -3,6 +3,7 @@ fetch("http://localhost:3000/api/products")
     .then(res => res.json())
     .then(cartList => {
         generateCartCard(cartList);
+        totalArticlesAndPrice(cartList);
     })
     .catch(err => console.log("error", err));
 
@@ -94,6 +95,7 @@ function generateCartCard(cartList) {
             listJson[arrayID].quantity = quantityItemElement.value;
             let cartRec = JSON.stringify(listJson);
             localStorage.setItem("cartStorage", cartRec);
+            totalArticlesAndPrice(cartList);
         });
 
         // Création d'une div pour le bouton supprimer / Rattachement à la div .cart__item__content__settings
@@ -117,7 +119,33 @@ function generateCartCard(cartList) {
             listJson.splice(arrayID ,1)
             let cartRec = JSON.stringify(listJson);
             localStorage.setItem("cartStorage", cartRec);
+            totalArticlesAndPrice(cartList);
         });
     };
 }
 
+function totalArticlesAndPrice(cartList) {
+    // Récuperation du localStorage
+    const list = localStorage.getItem("cartStorage");
+    let listJson = JSON.parse(list);
+
+    // Récupération des elements du DOM pour la quantité et le prix
+    const totalQuantity = document.getElementById("totalQuantity");
+    const totalPrice = document.getElementById("totalPrice");
+
+    // Calcul de la quantité et insertion dans le DOM
+    const quantity = listJson.map(list => Number(list.quantity));
+    totalQuantity.innerText = quantity.reduce((a, b) => a + b, 0);
+
+    // Prix total
+    let priceList = [];
+
+    for (const item of listJson) {
+        const cartId = listJson.find(cart => cart.id === item.id);
+        const existingObject = (element) => element._id == cartId.id;
+        const arrayID = (cartList.findIndex(existingObject));
+        const price = cartList[arrayID].price * item.quantity;
+        priceList.push(price);
+        totalPrice.innerText = priceList.reduce((a, b) => a + b, 0);
+    };
+};
