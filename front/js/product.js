@@ -81,7 +81,7 @@ elt.addEventListener("click", function() {
     }
     // Vérification d'erreur de la part de l'utilisateur
     if (cart.quantity < 0 || cart.quantity > 100 || cart.color == "") {
-        console.log("Error");
+        console.log("Cart quantity error");
     } else {
         newCart();
     }

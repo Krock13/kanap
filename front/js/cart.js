@@ -149,3 +149,95 @@ function totalArticlesAndPrice(cartList) {
         totalPrice.innerText = priceList.reduce((a, b) => a + b, 0);
     };
 };
+
+// Récupération du bouton "commander" dans le DOM
+let order = document.getElementById("order");
+
+// Regex pour le prénom, le nom et la ville
+const simpleRgex = /^\S[a-z- 'éèçêùà]*$/i;
+// Regex pour l'adresse
+const addressRGEX = /^\S[0-9a-z- 'éèçêùà]*$/i;
+// Regex pour l'email
+const emailRGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+
+// Récupération des éléments du DOM dédiés aux entrées utilisateur
+let firstName = document.getElementById("firstName");
+let lastName = document.getElementById("lastName");
+let address = document.getElementById("address");
+let city = document.getElementById("city");
+let email = document.getElementById("email");
+
+// Récupération des éléments du DOM dédiés aux messages d'erreur pour le formulaire
+const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+const addressErrorMsg = document.getElementById("addressErrorMsg");
+const cityErrorMsg = document.getElementById("cityErrorMsg");
+const emailErrorMsg = document.getElementById("emailErrorMsg");
+
+// Fonction pour autoriser ou empecher l'envoie de la commande
+function disableSubmit(disabled) {
+    if (disabled) {
+      document
+        .getElementById("order")
+        .setAttribute("disabled", true);
+    } else {
+      document
+        .getElementById("order")
+        .removeAttribute("disabled");
+    }
+};
+
+// Vérification de la validité du prénom
+firstName.addEventListener("input", function(e) {
+    if (simpleRgex.test(e.target.value)) {
+        firstNameErrorMsg.innerText = "";
+        disableSubmit(false);
+    }else {
+        firstNameErrorMsg.innerText = "Le prénom que vous avez entré n'est pas valide";
+        disableSubmit(true);
+    }
+});
+
+// Vérification de la validité du nom
+lastName.addEventListener("input", function(e) {
+    if (simpleRgex.test(e.target.value)) {
+        lastNameErrorMsg.innerText = "";
+        disableSubmit(false);
+    }else {
+        lastNameErrorMsg.innerText = "Le nom que vous avez entré n'est pas valide";
+        disableSubmit(true);
+    }
+});
+
+// Vérification de la validité de l'adresse
+address.addEventListener("input", function(e) {
+    if (addressRGEX.test(e.target.value)) {
+        addressErrorMsg.innerText = "";
+        disableSubmit(false);
+    }else {
+        addressErrorMsg.innerText = "L'adresse que vous avez entré n'est pas valide";
+        disableSubmit(true);
+    }
+});
+
+// Vérification de la validité de la ville
+city.addEventListener("input", function(e) {
+    if (simpleRgex.test(e.target.value)) {
+        cityErrorMsg.innerText = "";
+        disableSubmit(false);
+    }else {
+        cityErrorMsg.innerText = "La ville que vous avez entré n'est pas valide";
+        disableSubmit(true);
+    }
+});
+
+// Vérification de la validité de l'email
+email.addEventListener("input", function(e) {
+    if (emailRGEX.test(e.target.value)) {
+        emailErrorMsg.innerText = "";
+        disableSubmit(false);
+    }else {
+        emailErrorMsg.innerText = "L'adresse email que vous avez entré n'est pas valide";
+        disableSubmit(true);
+    }
+});
