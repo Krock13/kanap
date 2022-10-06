@@ -162,11 +162,11 @@ const addressRGEX = /^\S[0-9a-z- 'éèçêùà]*$/i;
 const emailRGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
 // Récupération des éléments du DOM dédiés aux entrées utilisateur
-let firstName = document.getElementById("firstName");
-let lastName = document.getElementById("lastName");
-let address = document.getElementById("address");
-let city = document.getElementById("city");
-let email = document.getElementById("email");
+const firstName = document.getElementById("firstName");
+const lastName = document.getElementById("lastName");
+const address = document.getElementById("address");
+const city = document.getElementById("city");
+const email = document.getElementById("email");
 
 // Récupération des éléments du DOM dédiés aux messages d'erreur pour le formulaire
 const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
@@ -189,75 +189,86 @@ function disableSubmit(disabled) {
 };
 
 // Vérification de la validité du prénom
-firstName.addEventListener("input", function(e) {
-    if (simpleRgex.test(e.target.value)) {
+function validateFirstName(firstName) {
+    if (simpleRgex.test(firstName)) {
         firstNameErrorMsg.innerText = "";
-        disableSubmit(false);
+        return true;
     }else {
         firstNameErrorMsg.innerText = "Le prénom que vous avez entré n'est pas valide";
-        disableSubmit(true);
+        return false;
     }
-});
+};
 
 // Vérification de la validité du nom
-lastName.addEventListener("input", function(e) {
-    if (simpleRgex.test(e.target.value)) {
+function validateLastName(lastName) {
+    if (simpleRgex.test(lastName)) {
         lastNameErrorMsg.innerText = "";
-        disableSubmit(false);
+        return true;
     }else {
         lastNameErrorMsg.innerText = "Le nom que vous avez entré n'est pas valide";
-        disableSubmit(true);
+        return false;
     }
-});
+};
 
 // Vérification de la validité de l'adresse
-address.addEventListener("input", function(e) {
-    if (addressRGEX.test(e.target.value)) {
+function validateAddress(address) {
+    if (addressRGEX.test(address)) {
         addressErrorMsg.innerText = "";
-        disableSubmit(false);
+        return true;
     }else {
         addressErrorMsg.innerText = "L'adresse que vous avez entré n'est pas valide";
-        disableSubmit(true);
+        return false;
     }
-});
+};
 
 // Vérification de la validité de la ville
-city.addEventListener("input", function(e) {
-    if (simpleRgex.test(e.target.value)) {
+function validateCity(city) {
+    if (simpleRgex.test(city)) {
         cityErrorMsg.innerText = "";
-        disableSubmit(false);
+        return true;
     }else {
         cityErrorMsg.innerText = "La ville que vous avez entré n'est pas valide";
-        disableSubmit(true);
+        return false;
     }
-});
+};
 
 // Vérification de la validité de l'email
-email.addEventListener("input", function(e) {
-    if (emailRGEX.test(e.target.value)) {
+function validateEmail(email) {
+    if (emailRGEX.test(email)) {
         emailErrorMsg.innerText = "";
-        disableSubmit(false);
+        return true;
     }else {
         emailErrorMsg.innerText = "L'adresse email que vous avez entré n'est pas valide";
-        disableSubmit(true);
+        return false;
     }
-});
+};
 
 // Fonction qui créé les éléments à envoyer à l'api (contact + id produits)
 order.addEventListener("click", function(e) {
     e.preventDefault();
-    let contact = {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        address: address.value,
-        city: city.value,
-        email: email.value
-    };
-    const list = localStorage.getItem("cartStorage");
-    let listJson = JSON.parse(list);
-    const products = listJson.map(list => list.id);
-    let jsonCart = JSON.stringify({contact, products});
-    send(jsonCart);
+    // Si l'un des champs du formulaire n'est pas valide, la fonction s'arrete
+    if (
+        validateFirstName(firstName.value) == false ||
+        validateLastName(lastName.value) == false ||
+        validateAddress(address.value) == false ||
+        validateCity(city.value) == false ||
+        validateEmail(email.value) == false
+        ) {
+        return;
+    } else {
+        let contact = {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            address: address.value,
+            city: city.value,
+            email: email.value
+        };
+        const list = localStorage.getItem("cartStorage");
+        let listJson = JSON.parse(list);
+        const products = listJson.map(list => list.id);
+        let jsonCart = JSON.stringify({contact, products});
+        send(jsonCart);
+    }
 });
 
 // Fonction pour envoyer le contact et l'id des produits à l'API afin de recevoir un numero de confirmation + redirection vers la page confirmation.html
