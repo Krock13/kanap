@@ -124,6 +124,7 @@ function generateCartCard(cartList) {
     };
 }
 
+// Fonction pour afficher la quantité totale et le prix total du panier
 function totalArticlesAndPrice(cartList) {
     // Récuperation du localStorage
     const list = localStorage.getItem("cartStorage");
@@ -151,7 +152,7 @@ function totalArticlesAndPrice(cartList) {
 };
 
 // Récupération du bouton "commander" dans le DOM
-let order = document.getElementById("order");
+const order = document.getElementById("order");
 
 // Regex pour le prénom, le nom et la ville
 const simpleRgex = /^\S[a-z- 'éèçêùà]*$/i;
@@ -241,3 +242,43 @@ email.addEventListener("input", function(e) {
         disableSubmit(true);
     }
 });
+
+// Fonction qui créé les éléments à envoyer à l'api (contact + id produits)
+order.addEventListener("click", function(e) {
+    e.preventDefault();
+    let contact = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value
+    };
+    const list = localStorage.getItem("cartStorage");
+    let listJson = JSON.parse(list);
+    const products = listJson.map(list => list.id);
+    let jsonCart = JSON.stringify({contact, products});
+    send(jsonCart);
+});
+
+// Fonction pour envoyer le contact et l'id des produits à l'API afin de recevoir un numero de confirmation + redirection vers la page confirmation.html
+function send(jsonCart) {
+    fetch("http://localhost:3000/api/products/order", {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: jsonCart
+    })
+    .then(function(res) {
+        if (res.ok) {
+            return res.json();
+        }
+    })
+    .then(function(data) {
+        localStorage.clear();
+        let confirmationUrl = "./confirmation.html?id=" + data.orderId;
+        window.location.href = confirmationUrl;
+    })
+    .catch(err => console.log("error", err));
+};
