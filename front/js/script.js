@@ -19,12 +19,12 @@ function generateProductsCard(productList) {
         const nomElement = document.createElement("h3");
         const descriptionElement = document.createElement("p");
 
-        // Affichage du nom et de la description du produit        
+        // Affichage du nom et de la description du produit
         nomElement.innerText = productList[i].name;        
-        descriptionElement.innerText = productList[i].description;  
+        descriptionElement.innerText = productList[i].description;
 
-        // Création de l'url qui servira à product.js
-        linkElement.href = "product.html" + "?_id=" + productList[i]._id;        
+        // Création de l'URL qui servira à product.js
+        linkElement.href = "product.html" + "?_id=" + productList[i]._id;
         
         // Définition des attributs de l'image du produit
         imageElement.src = productList[i].imageUrl;
@@ -35,6 +35,6 @@ function generateProductsCard(productList) {
         linkElement.appendChild(productElement);
         productElement.appendChild(imageElement);
         productElement.appendChild(nomElement);
-        productElement.appendChild(descriptionElement);      
+        productElement.appendChild(descriptionElement);
     };
 };
