@@ -7,12 +7,12 @@ fetch("http://localhost:3000/api/products")
     })
     .catch(err => console.log("error", err));
 
+// Lecture du localStorage
+const list = localStorage.getItem("cartStorage");
+let listJson = JSON.parse(list);
+
 // Fonction pour la création des fiches produits
 function generateCartCard(cartList) {
-    // Récupération du localStorage
-    const list = localStorage.getItem("cartStorage");
-    let listJson = JSON.parse(list);
-
     for (const item of listJson) {
         // Recherche dans cartList(API) l'element correspondant à l'id de l'item
         const cart = cartList.find(cart => cart._id === item.id);
@@ -34,8 +34,8 @@ function generateCartCard(cartList) {
 
         // Création d'une balise image  / Rattachement à la div .cart__item__img
         const imageElement = document.createElement("img");
-        imageElement.src = cart.imageUrl;  // A voir
-        imageElement.setAttribute("alt", cart.altTxt);  // A voir
+        imageElement.src = cart.imageUrl;
+        imageElement.setAttribute("alt", cart.altTxt);
         imageItemElement.appendChild(imageElement);
 
         // Création d'une div pour les élément du produit / Rattachement à la balise article
@@ -50,17 +50,17 @@ function generateCartCard(cartList) {
 
         // Création d'un titre h2 avec le nom du produit / Rattachement à la div .cart__item__content__description
         const nomElement = document.createElement("h2");
-        nomElement.innerText = cart.name;  // A voir
+        nomElement.innerText = cart.name;
         descriptionContentElement.appendChild(nomElement);
 
         // Création d'une balise p avec la couleur du produit / Rattachement à la div .cart__item__content__description
         const colorElement = document.createElement("p");
-        colorElement.innerText = item.color;  // A voir
+        colorElement.innerText = item.color;
         descriptionContentElement.appendChild(colorElement);
 
         // Création d'une balise p avec le prix du produit / Rattachement à la div .cart__item__content__description
         const priceElement = document.createElement("p");
-        priceElement.innerText = cart.price;  // A voir
+        priceElement.innerText = cart.price;
         descriptionContentElement.appendChild(priceElement);
 
         // Création d'une div pour les paramètres du produit / Rattachement à la div .cart__item__content
@@ -75,7 +75,7 @@ function generateCartCard(cartList) {
 
         // Création d'une balise p avec la quantité du produit / Rattachement à la div .cart__item__content__settings__quantity
         const quantityElement = document.createElement("p");
-        quantityElement.innerText = item.quantity;  // A voir
+        quantityElement.innerText = item.quantity;
         quantitySettingsElement.appendChild(quantityElement);
 
         // Création d'un input avec sa classe et ses attributs / Rattachement à la div .cart__item__content__settings__quantity
@@ -85,18 +85,8 @@ function generateCartCard(cartList) {
         quantityItemElement.setAttribute("name", "itemQuantity");
         quantityItemElement.setAttribute("min", "1");
         quantityItemElement.setAttribute("max", "100");
-        quantityItemElement.setAttribute("value", item.quantity); // A voir!
+        quantityItemElement.setAttribute("value", item.quantity);
         quantitySettingsElement.appendChild(quantityItemElement);
-        // Ajout de la possibilité de modifier la quantité du produit
-        quantityItemElement.addEventListener("change", function () {
-            quantityElement.textContent = this.value;
-            const existingObject = (element) => element.id == item.id && element.color == item.color;
-            let arrayID = (listJson.findIndex(existingObject))
-            listJson[arrayID].quantity = quantityItemElement.value;
-            let cartRec = JSON.stringify(listJson);
-            localStorage.setItem("cartStorage", cartRec);
-            totalArticlesAndPrice(cartList);
-        });
 
         // Création d'une div pour le bouton supprimer / Rattachement à la div .cart__item__content__settings
         const deleteSettingsElement = document.createElement("div");
@@ -108,6 +98,18 @@ function generateCartCard(cartList) {
         deleteItemElement.classList.add("deleteItem");
         deleteItemElement.innerText = "Supprimer";
         deleteSettingsElement.appendChild(deleteItemElement);
+        
+        // Ajout de la possibilité de modifier la quantité du produit
+        quantityItemElement.addEventListener("change", function () {
+            quantityElement.textContent = this.value;
+            const existingObject = (element) => element.id == item.id && element.color == item.color;
+            let arrayID = (listJson.findIndex(existingObject))
+            listJson[arrayID].quantity = quantityItemElement.value;
+            let cartRec = JSON.stringify(listJson);
+            localStorage.setItem("cartStorage", cartRec);
+            totalArticlesAndPrice(cartList);
+        });
+
         // Ajout de la possibilité de supprimer un produit
         deleteItemElement.addEventListener("click", function () {
             itemsCart.removeChild(itemCartElement)
@@ -126,9 +128,6 @@ function generateCartCard(cartList) {
 
 // Fonction pour afficher la quantité totale et le prix total du panier
 function totalArticlesAndPrice(cartList) {
-    // Récuperation du localStorage
-    const list = localStorage.getItem("cartStorage");
-    let listJson = JSON.parse(list);
 
     // Récupération des elements du DOM pour la quantité et le prix
     const totalQuantity = document.getElementById("totalQuantity");
@@ -150,6 +149,10 @@ function totalArticlesAndPrice(cartList) {
         totalPrice.innerText = priceList.reduce((a, b) => a + b, 0);
     };
 };
+
+////////////////
+// FORMULAIRE //
+////////////////
 
 // Récupération du bouton "commander" dans le DOM
 const order = document.getElementById("order");
