@@ -11,6 +11,12 @@ fetch("http://localhost:3000/api/products")
 const list = localStorage.getItem("cartStorage");
 let listJson = JSON.parse(list);
 
+// Fonction d'enregistrement du panier dans le localStorage
+function recordCart() {
+    let cartRec = JSON.stringify(listJson);
+    localStorage.setItem("cartStorage", cartRec);
+};
+
 // Fonction pour la création des fiches produits
 function generateCartCard(cartList) {
     for (const item of listJson) {
@@ -103,10 +109,9 @@ function generateCartCard(cartList) {
         quantityItemElement.addEventListener("change", function () {
             quantityElement.textContent = this.value;
             const existingObject = (element) => element.id == item.id && element.color == item.color;
-            let arrayID = (listJson.findIndex(existingObject))
+            let arrayID = (listJson.findIndex(existingObject));
             listJson[arrayID].quantity = quantityItemElement.value;
-            let cartRec = JSON.stringify(listJson);
-            localStorage.setItem("cartStorage", cartRec);
+            recordCart();
             totalArticlesAndPrice(cartList);
         });
 
@@ -117,10 +122,9 @@ function generateCartCard(cartList) {
             const cartId = listJson.find(cart => cart.id === item.id);
             const cartColor = listJson.find(cart => cart.color === item.color);
             const existingObject = (element) => element.id == cartId.id && element.color == cartColor.color;
-            let arrayID = (listJson.findIndex(existingObject))
-            listJson.splice(arrayID ,1)
-            let cartRec = JSON.stringify(listJson);
-            localStorage.setItem("cartStorage", cartRec);
+            let arrayID = (listJson.findIndex(existingObject));
+            listJson.splice(arrayID ,1);
+            recordCart();
             totalArticlesAndPrice(cartList);
         });
     };
