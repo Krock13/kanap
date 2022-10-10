@@ -1,4 +1,4 @@
-// Recuperation de l'URL pour isolé l'id du produit
+// Récupération de l'URL pour isolé l'id du produit
 const params = (new URL(document.location)).searchParams;
 const id = params.get("id");
 

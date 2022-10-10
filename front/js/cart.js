@@ -44,7 +44,7 @@ function generateCartCard(cartList) {
         imageElement.setAttribute("alt", cart.altTxt);
         imageItemElement.appendChild(imageElement);
 
-        // Création d'une div pour les élément du produit / Rattachement à la balise article
+        // Création d'une div pour les éléments du produit / Rattachement à la balise article
         const contentItemElement = document.createElement("div");
         contentItemElement.classList.add("cart__item__content");
         itemCartElement.appendChild(contentItemElement);
@@ -94,12 +94,12 @@ function generateCartCard(cartList) {
         quantityItemElement.setAttribute("value", item.quantity);
         quantitySettingsElement.appendChild(quantityItemElement);
 
-        // Création d'une div pour le bouton supprimer / Rattachement à la div .cart__item__content__settings
+        // Création d'une div pour le bouton "Supprimer" / Rattachement à la div .cart__item__content__settings
         const deleteSettingsElement = document.createElement("div");
         deleteSettingsElement.classList.add("cart__item__content__settings__delete");
         settingsContentElement.appendChild(deleteSettingsElement);
 
-        // Création d'une balise p pour le bouton supprimer / Rattachement à la div .cart__item__content__settings__delete
+        // Création d'une balise p pour le bouton "Supprimer" / Rattachement à la div .cart__item__content__settings__delete
         const deleteItemElement = document.createElement("p");
         deleteItemElement.classList.add("deleteItem");
         deleteItemElement.innerText = "Supprimer";
@@ -117,7 +117,7 @@ function generateCartCard(cartList) {
 
         // Ajout de la possibilité de supprimer un produit
         deleteItemElement.addEventListener("click", function () {
-            itemsCart.removeChild(itemCartElement)
+            itemsCart.removeChild(itemCartElement);
             // Recherche dans listJson l'element correspondant et suppression
             const cartId = listJson.find(cart => cart.id === item.id);
             const cartColor = listJson.find(cart => cart.color === item.color);
@@ -128,12 +128,12 @@ function generateCartCard(cartList) {
             totalArticlesAndPrice(cartList);
         });
     };
-}
+};
 
 // Fonction pour afficher la quantité totale et le prix total du panier
 function totalArticlesAndPrice(cartList) {
 
-    // Récupération des elements du DOM pour la quantité et le prix
+    // Récupération des éléments du DOM pour la quantité et le prix
     const totalQuantity = document.getElementById("totalQuantity");
     const totalPrice = document.getElementById("totalPrice");
 
@@ -158,7 +158,7 @@ function totalArticlesAndPrice(cartList) {
 // FORMULAIRE //
 ////////////////
 
-// Récupération du bouton "commander" dans le DOM
+// Récupération du bouton "Commander" dans le DOM
 const order = document.getElementById("order");
 
 // Regex pour le prénom, le nom et la ville
@@ -182,7 +182,7 @@ const addressErrorMsg = document.getElementById("addressErrorMsg");
 const cityErrorMsg = document.getElementById("cityErrorMsg");
 const emailErrorMsg = document.getElementById("emailErrorMsg");
 
-// Fonction pour autoriser ou empecher l'envoie de la commande
+// Fonction pour autoriser ou empêcher l'envoi de la commande
 function disableSubmit(disabled) {
     if (disabled) {
       document
@@ -250,10 +250,10 @@ function validateEmail(email) {
     }
 };
 
-// Fonction qui créé les éléments à envoyer à l'api (contact + id produits)
+// Fonction qui crée les éléments à envoyer à l'api (contact + id produits)
 order.addEventListener("click", function(e) {
     e.preventDefault();
-    // Si l'un des champs du formulaire n'est pas valide, la fonction s'arrete
+    // Si l'un des champs du formulaire n'est pas valide, la fonction s'arrête
     if (
         validateFirstName(firstName.value) == false ||
         validateLastName(lastName.value) == false ||
@@ -275,10 +275,10 @@ order.addEventListener("click", function(e) {
         const products = listJson.map(list => list.id);
         let jsonCart = JSON.stringify({contact, products});
         send(jsonCart);
-    }
+    };
 });
 
-// Fonction pour envoyer le contact et l'id des produits à l'API afin de recevoir un numero de confirmation + redirection vers la page confirmation.html
+// Fonction pour envoyer le contact et l'id des produits à l'API afin de recevoir un numéro de confirmation + redirection vers la page confirmation.html
 function send(jsonCart) {
     fetch("http://localhost:3000/api/products/order", {
         method: "POST",
