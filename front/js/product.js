@@ -1,3 +1,5 @@
+import {recordCart} from "./utils.js";
+
 // Récupération de l'URL pour isolé l'id du produit
 const params = (new URL(document.location)).searchParams;
 const id = params.get("_id");
@@ -52,24 +54,18 @@ function productDetails(productId) {
     colorsOption(productId);
 };
 
-// Fonction pour enregistrer le panier dans le localStorage
-function stringifyLocalStorage(e) {
-    let cartRec = JSON.stringify(e);
-    localStorage.setItem("cartStorage", cartRec);
-};
-
 // Fonction de vérification de l'absence d'un objet similaire dans le panier pour l'ajouter à la liste - sinon incrémente l'objet similaire
 function recNewCart(cart) {
-    let list = localStorage.getItem("cartStorage");
+    const list = localStorage.getItem("cartStorage");
     let listJson = JSON.parse(list);
     const existingObject = (element) => element.id == cart.id && element.color == cart.color;
     if (listJson.findIndex(existingObject) == -1) {
         listJson.push(cart);
-        stringifyLocalStorage(listJson);
+        recordCart(listJson);
     } else {
         let arrayID = (listJson.findIndex(existingObject));
         listJson[arrayID].quantity = Number(listJson[arrayID].quantity) + Number(cart.quantity);
-        stringifyLocalStorage(listJson);
+        recordCart(listJson);
     };
 };
 
@@ -80,7 +76,7 @@ function newCart(cart) {
     } else {
         let arrayStorage = [];
         arrayStorage.push(cart);
-        stringifyLocalStorage(arrayStorage);
+        recordCart(arrayStorage);
     }
 };
 
