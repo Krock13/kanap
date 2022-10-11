@@ -7,7 +7,7 @@ export function form(listJson) {
     // Regex pour l'adresse
     const addressRGEX = /^\S[0-9a-z- 'éèçêùà]*$/i;
     // Regex pour l'email
-    const emailRGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    const emailRGEX = /^[\w-\.]+@([\w-]+\.)+[a-z]{2,}$/g;
 
     // Récupération des éléments du DOM dédiés aux entrées utilisateur
     const firstName = document.getElementById("firstName");
