@@ -3,7 +3,7 @@ const simpleRgex = /^\S[a-z- 'éèçêùà]*$/i;
 // Regex pour l'adresse
 const addressRGEX = /^\S[0-9a-z- 'éèçêùà]*$/i;
 // Regex pour l'email
-const emailRGEX = /^[\w-\.]+@([\w-]+\.)+[a-z]{2,}$/g;
+const emailRGEX = /^[\w-\.]+@([\w-]+\.)+[a-z]{2,}$/;
 
 // Récupération des éléments du DOM dédiés aux messages d'erreur pour le formulaire
 const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
@@ -18,7 +18,6 @@ function validateFirstName(firstName) {
         firstNameErrorMsg.innerText = "";
         return true;
     }else {
-        firstNameErrorMsg.innerText = "Le prénom que vous avez entré n'est pas valide";
         return false;
     }
 };
@@ -29,7 +28,6 @@ function validateLastName(lastName) {
         lastNameErrorMsg.innerText = "";
         return true;
     }else {
-        lastNameErrorMsg.innerText = "Le nom que vous avez entré n'est pas valide";
         return false;
     }
 };
@@ -40,7 +38,6 @@ function validateAddress(address) {
         addressErrorMsg.innerText = "";
         return true;
     }else {
-        addressErrorMsg.innerText = "L'adresse que vous avez entré n'est pas valide";
         return false;
     }
 };
@@ -51,7 +48,6 @@ function validateCity(city) {
         cityErrorMsg.innerText = "";
         return true;
     }else {
-        cityErrorMsg.innerText = "La ville que vous avez entré n'est pas valide";
         return false;
     }
 };
@@ -62,12 +58,11 @@ function validateEmail(email) {
         emailErrorMsg.innerText = "";
         return true;
     }else {
-        emailErrorMsg.innerText = "L'adresse email que vous avez entré n'est pas valide";
         return false;
     }
 };
 
-// Fonction pour envoyer le contact et l'id des produits à l'API afin de recevoir un numéro de confirmation + redirection vers la page confirmation.html
+// Fonction pour envoyer le contact et l'id des produits (body) à l'API afin de recevoir un numéro de confirmation + redirection vers la page confirmation.html
 function send(jsonCart) {
     fetch("http://localhost:3000/api/products/order", {
         method: "POST",
@@ -105,26 +100,46 @@ export function form(listJson) {
     // Fonction qui crée les éléments à envoyer à l'api (contact + id produits)
     order.addEventListener("click", function(e) {
         e.preventDefault();
-        // Si l'un des champs du formulaire n'est pas valide, la fonction s'arrête
+        // Si l'un des champs du formulaire n'est pas valide, affichage du message d'erreur et la fonction s'arrête
+        let firstNameBlank = validateFirstName(firstName.value);
+        let lastNameBlank = validateLastName(lastName.value);
+        let addressBlank = validateAddress(address.value);
+        let cityBlank = validateCity(city.value);
+        let emailBlank = validateEmail(email.value);
         if (
-            validateFirstName(firstName.value) == false ||
-            validateLastName(lastName.value) == false ||
-            validateAddress(address.value) == false ||
-            validateCity(city.value) == false ||
-            validateEmail(email.value) == false
+            firstNameBlank == false ||
+            lastNameBlank == false ||
+            addressBlank == false ||
+            cityBlank == false ||
+            emailBlank == false
             ) {
+            if (firstNameBlank == false) {
+                firstNameErrorMsg.innerText = "Le prénom que vous avez entré n'est pas valide";
+            }
+            if (lastNameBlank == false) {
+                lastNameErrorMsg.innerText = "Le nom que vous avez entré n'est pas valide";
+            }
+            if (addressBlank == false) {
+                addressErrorMsg.innerText = "L'adresse que vous avez entré n'est pas valide";
+            }
+            if (cityBlank == false) {
+                cityErrorMsg.innerText = "La ville que vous avez entré n'est pas valide";
+            }
+            if (emailBlank == false) {
+                emailErrorMsg.innerText = "L'adresse email que vous avez entré n'est pas valide";
+            }
             return;
-        } else {
-            let contact = {
-                firstName: firstName.value,
-                lastName: lastName.value,
-                address: address.value,
-                city: city.value,
-                email: email.value
-            };
-            const products = listJson.map(list => list.id);
-            let jsonCart = JSON.stringify({contact, products});
-            send(jsonCart);
+        }
+        // Création du body (contact + products) et envoie à l'API avec send(jsonCart)
+        let contact = {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            address: address.value,
+            city: city.value,
+            email: email.value
         };
+        const products = listJson.map(list => list.id);
+        let jsonCart = JSON.stringify({contact, products});
+        send(jsonCart);
     });
 };
