@@ -1,5 +1,6 @@
 import {recordCart} from "./utils.js";
 import {form} from "./form.js";
+import {listJson} from "./utils.js";
 
 // Récupération de la liste des produits
 fetch("http://localhost:3000/api/products")
@@ -9,10 +10,6 @@ fetch("http://localhost:3000/api/products")
         totalArticlesAndPrice(cartList);
     })
     .catch(err => console.log("error", err));
-
-// Lecture du localStorage
-const list = localStorage.getItem("cartStorage");
-let listJson = JSON.parse(list);
 
 // Fonction pour la création des fiches produits
 function generateCartCard(cartList) {
