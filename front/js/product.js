@@ -1,4 +1,5 @@
 import {recordCart} from "./utils.js";
+import {readListJson} from "./utils.js";
 
 // Récupération de l'URL pour isolé l'id du produit
 const params = (new URL(document.location)).searchParams;
@@ -56,8 +57,7 @@ function productDetails(productId) {
 
 // Fonction de vérification de l'absence d'un objet similaire dans le panier pour l'ajouter à la liste - sinon incrémente l'objet similaire
 function recNewCart(cart) {
-    const list = localStorage.getItem("cartStorage");
-    let listJson = JSON.parse(list);
+    let listJson = readListJson();
     const existingObject = (element) => element.id == cart.id && element.color == cart.color;
     if (listJson.findIndex(existingObject) == -1) {
         listJson.push(cart);

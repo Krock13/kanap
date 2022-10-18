@@ -4,7 +4,9 @@ export function recordCart(e) {
     localStorage.setItem("cartStorage", cartRec);
 };
 
-// Lecture du localStorage
-const list = localStorage.getItem("cartStorage");
-let listJson = JSON.parse(list);
-export {listJson};
+// Fonction de lecture du panier dans le localStorage
+export function readListJson() {
+    const list = localStorage.getItem("cartStorage");
+    let listJson = JSON.parse(list);
+    return listJson;
+};

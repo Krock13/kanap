@@ -1,6 +1,8 @@
 import {recordCart} from "./utils.js";
 import {form} from "./form.js";
-import {listJson} from "./utils.js";
+import {readListJson} from "./utils.js";
+
+let listJson = readListJson();
 
 // Récupération de la liste des produits
 fetch("http://localhost:3000/api/products")

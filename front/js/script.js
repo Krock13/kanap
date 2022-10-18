@@ -20,7 +20,7 @@ function generateProductsCard(productList) {
         const descriptionElement = document.createElement("p");
 
         // Affichage du nom et de la description du produit
-        nomElement.innerText = productList[i].name;        
+        nomElement.innerText = productList[i].name;
         descriptionElement.innerText = productList[i].description;
 
         // Création de l'URL qui servira à product.js
